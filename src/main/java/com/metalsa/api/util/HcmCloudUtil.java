@@ -10,7 +10,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
-//import com.metalsa.interfaz.modelo.hcm.HcmResponse;
 
 public class HcmCloudUtil {
 

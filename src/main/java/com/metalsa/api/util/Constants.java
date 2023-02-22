@@ -19,4 +19,6 @@ public class Constants {
     public static final String HCMWSDLORIGEN = "HCMBI";
     public static final String HCMWSDLORIGENTB = "HCMTB";
 
+    public static final String KR_PROCESSLABORACCOUNT = "NIVELES_LABOR";
+
 }
