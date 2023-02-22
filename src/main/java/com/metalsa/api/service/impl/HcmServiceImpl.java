@@ -1,6 +1,8 @@
 package com.metalsa.api.service.impl;
 
+import com.metalsa.api.dao.HcmDAO;
 import com.metalsa.api.model.LaborLevel;
+import com.metalsa.api.model.kronos.KronosWFC;
 import com.metalsa.api.repository.LaborLevelRepository;
 import com.metalsa.api.service.HcmService;
 import com.metalsa.api.util.StringUtil;
@@ -17,8 +19,8 @@ public class HcmServiceImpl implements HcmService {
     @Autowired
     LaborLevelRepository laborLevelRepository;
 
-    /*@Autowired
-    HcmDAO hcmDAO;*/
+    @Autowired
+    HcmDAO hcmDAO;
 
     @Override
     public List<LaborLevel> getLaborLevels(Date fechaEjecucion) {
@@ -27,7 +29,7 @@ public class HcmServiceImpl implements HcmService {
 
         try {
             numeroBloque = 2L;
-            //laborLevels = hcmDAO.getLaborLevels(StringUtil.encodeFechaHcm(fechaEjecucion));
+            laborLevels = hcmDAO.getLaborLevels(StringUtil.encodeFechaHcm(fechaEjecucion));
 
             /*if(laborLevels != null && !laborLevels.isEmpty()) {
 

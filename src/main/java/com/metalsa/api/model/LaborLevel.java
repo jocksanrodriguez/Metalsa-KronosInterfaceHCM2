@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(schema = "MIDAS")
+@Table(schema = "KRONOS")
 public class LaborLevel {
 
     @Id

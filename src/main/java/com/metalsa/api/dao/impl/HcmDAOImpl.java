@@ -7,12 +7,14 @@ import com.metalsa.api.util.Constants;
 import com.metalsa.api.util.HcmCloudUtil;
 import com.metalsa.api.wsdl.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import javax.xml.namespace.QName;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class HcmDAOImpl implements HcmDAO {
     @Value("${hcm.userid}")
     private String hcmUserID;
