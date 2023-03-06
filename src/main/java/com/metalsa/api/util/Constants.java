@@ -5,6 +5,9 @@ public class Constants {
     private Constants() {
     }
 
+    public static final String HCM_LABOR_LEVEL_CC_PROYECTO_SLASH = "CC/PROYECTO";
+    public static final String HCM_LABOR_LEVEL_CC_PROYECTO_UNDERSCORE = "CCO_PROYECTO";
+
     public static final String HCMEMPTIMEZONE="13008";
     //	public static final String HCMWSDLURL="https://hcun.bi.us2.oraclecloud.com/xmlpserver/services/v2/ReportService?WSDL";
     public static final String HCMWSDLURL="https://hcun.fa.us2.oraclecloud.com/xmlpserver/services/v2/ReportService?WSDL";
@@ -20,5 +23,6 @@ public class Constants {
     public static final String HCMWSDLORIGENTB = "HCMTB";
 
     public static final String KR_PROCESSLABORACCOUNT = "NIVELES_LABOR";
+
 
 }

@@ -1,8 +1,9 @@
 package com.metalsa.api.dao.impl;
 
 import com.metalsa.api.dao.HcmDAO;
-import com.metalsa.api.model.LaborLevel;
+import com.metalsa.api.model.entity.LaborLevel;
 import com.metalsa.api.model.hcm.DataDs;
+import com.metalsa.api.payload.LaborLevelDTO;
 import com.metalsa.api.util.Constants;
 import com.metalsa.api.util.HcmCloudUtil;
 import com.metalsa.api.wsdl.*;
@@ -26,7 +27,7 @@ public class HcmDAOImpl implements HcmDAO {
     private String absolutePathReportNivelesLab;
 
     @Override
-    public List<LaborLevel> getLaborLevels(String sEffectiveDate) {
+    public List<LaborLevelDTO> getLaborLevels(String sEffectiveDate) {
 
         ReportRequest reportRequest = new ReportRequest();
         ParamNameValues paramNameValues = new ParamNameValues();
@@ -36,7 +37,7 @@ public class HcmDAOImpl implements HcmDAO {
         ReportResponse reportResponse = new ReportResponse();
         HcmCloudUtil hcmCloudUtil = new HcmCloudUtil();
         DataDs dataDsResponse = new DataDs();
-        List<LaborLevel> nivelesLabor = new ArrayList<>();
+        List<LaborLevelDTO> nivelesLabor = new ArrayList<>();
 
         try {
             arrayOfString.getItem().add(sEffectiveDate);
@@ -55,15 +56,15 @@ public class HcmDAOImpl implements HcmDAO {
             if(dataDsResponse != null && dataDsResponse.getG1() != null && dataDsResponse.getG1().size()!=0) {
 
                 for(int x=0; x<dataDsResponse.getG1().size(); x++) {
-                    LaborLevel nivelInfo = new LaborLevel();
+                    LaborLevelDTO nivelInfo = new LaborLevelDTO();
 
                     nivelInfo.setReqCode(dataDsResponse.getG1().get(x).getReqCode()==null?new Integer(0):new Integer(dataDsResponse.getG1().get(x).getReqCode()));
                     nivelInfo.setLevelName(dataDsResponse.getG1().get(x).getLaborLevelEntryName()==null?"-":dataDsResponse.getG1().get(x).getLaborLevelEntryName());
                     nivelInfo.setDescription(dataDsResponse.getG1().get(x).getLaborLabelName()==null?"-":dataDsResponse.getG1().get(x).getLaborLabelName());
 
                     if(dataDsResponse.getG1().get(x).getLaborLevelName()!=null && !dataDsResponse.getG1().get(x).getLaborLevelName().isEmpty()) {
-                        if(dataDsResponse.getG1().get(x).getLaborLevelName().contains("CC/PROYECTO")) {
-                            nivelInfo.setLevelType("CCO_PROYECTO");
+                        if(dataDsResponse.getG1().get(x).getLaborLevelName().contains(Constants.HCM_LABOR_LEVEL_CC_PROYECTO_SLASH)) {
+                            nivelInfo.setLevelType(Constants.HCM_LABOR_LEVEL_CC_PROYECTO_UNDERSCORE);
                         }else {
                             nivelInfo.setLevelType(dataDsResponse.getG1().get(x).getLaborLevelName());
                         }

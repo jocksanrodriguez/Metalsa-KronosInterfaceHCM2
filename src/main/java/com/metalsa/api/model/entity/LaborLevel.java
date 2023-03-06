@@ -1,4 +1,4 @@
-package com.metalsa.api.model;
+package com.metalsa.api.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,30 +10,20 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(schema = "KRONOS")
+@Table(schema = "MIDAS")
 public class LaborLevel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Date creationDate;
-
     private Long sectorNumber;
-
     private Integer reqCode;
-
     private String levelName;
-
     private String description;
-
     private String levelType;
-
     private Date creationDateLevel;
-
     private Date modificationDateLevel;
-
     private Clob xmlRequest;
-
     private Clob xmlResponse;
 }

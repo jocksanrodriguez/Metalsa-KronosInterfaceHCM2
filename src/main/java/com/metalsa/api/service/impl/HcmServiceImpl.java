@@ -1,35 +1,46 @@
 package com.metalsa.api.service.impl;
 
 import com.metalsa.api.dao.HcmDAO;
-import com.metalsa.api.model.LaborLevel;
-import com.metalsa.api.model.kronos.KronosWFC;
+import com.metalsa.api.model.entity.LaborLevel;
+import com.metalsa.api.payload.LaborLevelDTO;
+import com.metalsa.api.payload.LaborLevelResponse;
 import com.metalsa.api.repository.LaborLevelRepository;
 import com.metalsa.api.service.HcmService;
+import com.metalsa.api.util.MapperUtil;
 import com.metalsa.api.util.StringUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HcmServiceImpl implements HcmService {
 
-    @Autowired
-    LaborLevelRepository laborLevelRepository;
 
-    @Autowired
-    HcmDAO hcmDAO;
+    private LaborLevelRepository laborLevelRepository;
+    private HcmDAO hcmDAO;
+
+    public HcmServiceImpl(LaborLevelRepository laborLevelRepository, HcmDAO hcmDAO) {
+        this.laborLevelRepository = laborLevelRepository;
+        this.hcmDAO = hcmDAO;
+    }
 
     @Override
-    public List<LaborLevel> getLaborLevels(Date fechaEjecucion) {
-        List<LaborLevel> laborLevels = new ArrayList<>();
-        Long numeroBloque = new Long(0);
+    public List<LaborLevelDTO> getLaborLevels(Date fechaEjecucion) {
+        List<LaborLevelDTO> laborLevelsList = new ArrayList<>();
 
         try {
-            numeroBloque = 2L;
-            laborLevels = hcmDAO.getLaborLevels(StringUtil.encodeFechaHcm(fechaEjecucion));
+            laborLevelsList = hcmDAO.getLaborLevels(StringUtil.encodeFechaHcm(fechaEjecucion));
+
+
+            /*laborLevelResponse.setLaborLevels(laborLevelsList
+                    .stream()
+                    .map(laborLevel -> MapperUtil.mapToDTO(laborLevel, LaborLevelDTO.class))
+                    .collect(Collectors.toList()));*/
 
             /*if(laborLevels != null && !laborLevels.isEmpty()) {
 
@@ -58,6 +69,6 @@ public class HcmServiceImpl implements HcmService {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return null;
+        return laborLevelsList;
     }
 }
