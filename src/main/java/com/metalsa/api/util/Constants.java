@@ -7,6 +7,12 @@ public class Constants {
 
     public static final String HCM_LABOR_LEVEL_CC_PROYECTO_SLASH = "CC/PROYECTO";
     public static final String HCM_LABOR_LEVEL_CC_PROYECTO_UNDERSCORE = "CCO_PROYECTO";
+    public static final String KR_XMLRESPONSESTATUSSUCCESS="Success";
+    public static final String KR_XMLRESPONSESTATUSFAILURE="Failure";
+    public static final String KR_XMLREQUESTPARAMNOTFOUND="NOTFOUNDPARAM";
+
+    public static final String KR_OPER_EMPLOYEETYPE = "Operation Worker";
+    public static final String KR_ADMN_EMPLOYEETYPE = "Administrative Employee";
 
     public static final String HCMEMPTIMEZONE="13008";
     //	public static final String HCMWSDLURL="https://hcun.bi.us2.oraclecloud.com/xmlpserver/services/v2/ReportService?WSDL";

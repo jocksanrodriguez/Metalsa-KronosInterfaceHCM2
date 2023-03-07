@@ -1,14 +1,14 @@
 package com.metalsa.api.payload;
 
-import com.metalsa.api.model.entity.LaborLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-public class LaborLevelResponse {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class LaborLevelResponse implements Serializable {
 
     private List<LaborLevelDTO> laborLevels;
 

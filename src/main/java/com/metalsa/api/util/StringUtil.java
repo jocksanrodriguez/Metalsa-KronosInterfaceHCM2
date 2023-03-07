@@ -5,7 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StringUtil {
-	
+
+	private StringUtil() {
+	}
+
 	public static String deleteSpecialsChars(String chainData) {
 		
 		return chainData.replaceAll("[^a-zA-Z]", " ");

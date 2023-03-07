@@ -20,7 +20,9 @@ import java.util.List;
 @RequestMapping("/hcm")
 public class HcmController {
 
-    private  final HcmService hcmService;
+    private final HcmService hcmService;
+
+
 
     public HcmController(HcmService hcmService) {
         this.hcmService = hcmService;

@@ -1,12 +1,14 @@
 package com.metalsa.api.payload;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.Lob;
+import java.sql.Clob;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LaborLevelDTO {
 
     private Long id;
@@ -18,5 +20,9 @@ public class LaborLevelDTO {
     private String levelType;
     private Date creationDateLevel;
     private Date modificationDateLevel;
+    @Lob
+    private Clob xmlRequest;
+    @Lob
+    private Clob xmlResponse;
 
 }
