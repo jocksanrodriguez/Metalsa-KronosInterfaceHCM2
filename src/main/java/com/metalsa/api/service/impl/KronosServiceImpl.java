@@ -44,4 +44,21 @@ public class KronosServiceImpl implements KronosService {
         }
         return laborsAdded;
     }
+
+    public KronosWFC addLaborLevel(LaborLevelDTO laborLevelDTO){
+        KronosWFC kronos = new KronosWFC();
+        try{
+
+
+            kronos = kronosDAO.addLaborLevel(
+                    StringUtil.deleteSpecialsChars(laborLevelDTO.getDescription()),
+                    laborLevelDTO.getLevelType(),
+                    laborLevelDTO.getLevelName());
+
+        }catch(Exception e){
+            log.error("An error has occurred to add Labor Level on Kronos App "+e.getMessage());
+            return null;
+        }
+        return kronos;
+    }
 }

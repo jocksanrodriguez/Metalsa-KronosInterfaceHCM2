@@ -42,23 +42,69 @@ public class LaborLevelServiceImpl implements LaborLevelService {
             log.info("Getting data from HCM...");
             List<LaborLevelDTO> laborsFromHcm = hcmService.getLaborLevels(effectiveDate);
 
-            log.info("Sending data to Kronos...");
-            List<KronosWFC> laborsKronos = kronosService.addLaborLevel(laborsFromHcm);
+            log.info("Iterating laborList from HCM...");
+            for(LaborLevelDTO level:laborsFromHcm){
+                KronosWFC kronosWFC = new KronosWFC();
+                LaborLevelDTO mergedLabor = new LaborLevelDTO();
+                log.info("Sending data to Kronos...");
+                kronosWFC = kronosService.addLaborLevel(level);
+                mergedLabor = mergeLaborLevel(kronosWFC, level);
 
-            log.info("Send data to database...");
+                log.info("Send data to database...");
+                LaborLevelDTO newLaborLevel = createLaborLevel(mergedLabor);
+
+                log.info("nulling xmlRequest and xmlResponse fields to avoid serialization error");
+                newLaborLevel.setXmlRequest(null);
+                newLaborLevel.setXmlResponse(null);
+
+                laborLevelDTOList.add(newLaborLevel);
+            }
+
+
+            //List<KronosWFC> laborsKronos = kronosService.addLaborLevel(laborsFromHcm);
+            /*log.info("Send data to database...");
             for(KronosWFC kronosObj : laborsKronos){
                 LaborLevelDTO laborLevelDTO = processLaborLevel(kronosObj);
+                log.info("Complementing data with Kronos Obj and LaborLevelDTO before to send database");
+
                 LaborLevelDTO newLaborLevel = createLaborLevel(laborLevelDTO);
+
+                log.info("nulling xmlRequest and xmlResponse fields to avoid serialization error");
                 newLaborLevel.setXmlRequest(null);
                 newLaborLevel.setXmlResponse(null);
                 laborLevelDTOList.add(newLaborLevel);
-            }
+            }*/
             laborLevelResponse.setLaborLevels(laborLevelDTOList);
         }catch (Exception e){
             log.error("An error has ocurred trying to process getLaborLevels: "+e.getMessage());
             e.printStackTrace();
         }
         return laborLevelResponse;
+    }
+
+    @Override
+    public LaborLevelDTO mergeLaborLevel(KronosWFC kronosWFC, LaborLevelDTO laborLevelDTO){
+        LaborLevelDTO laborMerged = new LaborLevelDTO();
+
+        try{
+
+            laborMerged.setCreationDate(new Date());
+            laborMerged.setSectorNumber(1L);
+            laborMerged.setDescription(laborLevelDTO.getDescription());
+            laborMerged.setLevelName(laborLevelDTO.getLevelName());
+            laborMerged.setLevelType(laborLevelDTO.getLevelType());
+            laborMerged.setModificationDateLevel(laborLevelDTO.getModificationDateLevel());
+            laborMerged.setReqCode(laborLevelDTO.getReqCode());
+            laborMerged.setXmlRequest(new javax.sql.rowset.serial.SerialClob(kronosWFC.getXmlRequest().toCharArray()));
+            laborMerged.setXmlResponse(new javax.sql.rowset.serial.SerialClob(kronosWFC.getXmlResponse().toCharArray()));
+
+        }catch(Exception e){
+            log.error("An error has occurred processing labors levels: "+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+
+        return laborMerged;
     }
 
     @Override
@@ -70,8 +116,6 @@ public class LaborLevelServiceImpl implements LaborLevelService {
             laborLevelDTO.setCreationDate(new Date());
             laborLevelDTO.setXmlRequest(new javax.sql.rowset.serial.SerialClob(kronosWFC.getXmlRequest().toCharArray()));
             laborLevelDTO.setXmlResponse(new javax.sql.rowset.serial.SerialClob(kronosWFC.getXmlResponse().toCharArray()));
-
-            //createLaborLevel(laborLevelDTO);
 
         }catch(Exception e){
             log.error("An error has occurred processing labors levels: "+e.getMessage());

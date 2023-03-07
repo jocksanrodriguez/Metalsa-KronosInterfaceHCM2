@@ -8,4 +8,5 @@ import java.util.List;
 public interface KronosService {
 
     List<KronosWFC> addLaborLevel(List<LaborLevelDTO> laborLevels);
+    KronosWFC addLaborLevel(LaborLevelDTO laborLevelDTO);
 }
