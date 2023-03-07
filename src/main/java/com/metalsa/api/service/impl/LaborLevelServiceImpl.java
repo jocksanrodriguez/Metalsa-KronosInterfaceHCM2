@@ -1,5 +1,6 @@
 package com.metalsa.api.service.impl;
 
+import com.metalsa.api.dao.StoredHelperDAO;
 import com.metalsa.api.model.entity.LaborLevel;
 import com.metalsa.api.model.kronos.KronosWFC;
 import com.metalsa.api.payload.LaborLevelDTO;
@@ -24,13 +25,16 @@ public class LaborLevelServiceImpl implements LaborLevelService {
     private KronosService kronosService;
     private LaborLevelRepository laborLevelRepository;
     private ModelMapper mapper;
+    private StoredHelperDAO storedHelperDAO;
 
     public LaborLevelServiceImpl(HcmService hcmService, KronosService kronosService,
-                                 LaborLevelRepository laborLevelRepository, ModelMapper mapper) {
+                                 LaborLevelRepository laborLevelRepository, ModelMapper mapper,
+                                 StoredHelperDAO storedHelperDAO) {
         this.hcmService = hcmService;
         this.kronosService = kronosService;
         this.laborLevelRepository = laborLevelRepository;
         this.mapper = mapper;
+        this.storedHelperDAO = storedHelperDAO;
     }
 
     @Override
@@ -60,20 +64,6 @@ public class LaborLevelServiceImpl implements LaborLevelService {
                 laborLevelDTOList.add(newLaborLevel);
             }
 
-
-            //List<KronosWFC> laborsKronos = kronosService.addLaborLevel(laborsFromHcm);
-            /*log.info("Send data to database...");
-            for(KronosWFC kronosObj : laborsKronos){
-                LaborLevelDTO laborLevelDTO = processLaborLevel(kronosObj);
-                log.info("Complementing data with Kronos Obj and LaborLevelDTO before to send database");
-
-                LaborLevelDTO newLaborLevel = createLaborLevel(laborLevelDTO);
-
-                log.info("nulling xmlRequest and xmlResponse fields to avoid serialization error");
-                newLaborLevel.setXmlRequest(null);
-                newLaborLevel.setXmlResponse(null);
-                laborLevelDTOList.add(newLaborLevel);
-            }*/
             laborLevelResponse.setLaborLevels(laborLevelDTOList);
         }catch (Exception e){
             log.error("An error has ocurred trying to process getLaborLevels: "+e.getMessage());
@@ -87,9 +77,8 @@ public class LaborLevelServiceImpl implements LaborLevelService {
         LaborLevelDTO laborMerged = new LaborLevelDTO();
 
         try{
-
             laborMerged.setCreationDate(new Date());
-            laborMerged.setSectorNumber(1L);
+            laborMerged.setSectorNumber(storedHelperDAO.getNextSectorNumber());
             laborMerged.setDescription(laborLevelDTO.getDescription());
             laborMerged.setLevelName(laborLevelDTO.getLevelName());
             laborMerged.setLevelType(laborLevelDTO.getLevelType());

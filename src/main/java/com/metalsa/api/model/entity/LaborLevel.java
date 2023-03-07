@@ -26,4 +26,5 @@ public class LaborLevel {
     private Date modificationDateLevel;
     private Clob xmlRequest;
     private Clob xmlResponse;
+    private String linkedCostCenter;
 }
