@@ -46,23 +46,30 @@ public class LaborLevelServiceImpl implements LaborLevelService {
             log.info("Getting data from HCM...");
             List<LaborLevelDTO> laborsFromHcm = hcmService.getLaborLevels(effectiveDate);
 
-            log.info("Iterating laborList from HCM...");
-            for(LaborLevelDTO level:laborsFromHcm){
-                KronosWFC kronosWFC = new KronosWFC();
-                LaborLevelDTO mergedLabor = new LaborLevelDTO();
-                log.info("Sending data to Kronos...");
-                kronosWFC = kronosService.addLaborLevel(level);
-                mergedLabor = mergeLaborLevel(kronosWFC, level);
+            log.info("Getting sector number...");
+            Long sectorNumber = storedHelperDAO.getNextSectorNumber();
+            if(laborsFromHcm != null && !laborsFromHcm.isEmpty()){
 
-                log.info("Send data to database...");
-                LaborLevelDTO newLaborLevel = createLaborLevel(mergedLabor);
+                log.info("Iterating laborList from HCM...");
+                for(LaborLevelDTO level:laborsFromHcm){
+                    KronosWFC kronosWFC = new KronosWFC();
+                    LaborLevelDTO mergedLabor = new LaborLevelDTO();
+                    log.info("Sending data to Kronos...");
+                    kronosWFC = kronosService.addLaborLevel(level);
+                    mergedLabor = mergeLaborLevel(kronosWFC, level);
 
-                log.info("nulling xmlRequest and xmlResponse fields to avoid serialization error");
-                newLaborLevel.setXmlRequest(null);
-                newLaborLevel.setXmlResponse(null);
+                    log.info("Setting block number and prepare to send data to database...");
+                    mergedLabor.setSectorNumber(sectorNumber);
+                    LaborLevelDTO newLaborLevel = createLaborLevel(mergedLabor);
 
-                laborLevelDTOList.add(newLaborLevel);
+                    log.info("nulling xmlRequest and xmlResponse fields to avoid serialization error");
+                    newLaborLevel.setXmlRequest(null);
+                    newLaborLevel.setXmlResponse(null);
+
+                    laborLevelDTOList.add(newLaborLevel);
+                }
             }
+
 
             laborLevelResponse.setLaborLevels(laborLevelDTOList);
         }catch (Exception e){
@@ -78,7 +85,6 @@ public class LaborLevelServiceImpl implements LaborLevelService {
 
         try{
             laborMerged.setCreationDate(new Date());
-            laborMerged.setSectorNumber(storedHelperDAO.getNextSectorNumber());
             laborMerged.setDescription(laborLevelDTO.getDescription());
             laborMerged.setLevelName(laborLevelDTO.getLevelName());
             laborMerged.setLevelType(laborLevelDTO.getLevelType());
