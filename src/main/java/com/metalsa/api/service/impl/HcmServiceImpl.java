@@ -1,8 +1,8 @@
 package com.metalsa.api.service.impl;
 
 import com.metalsa.api.dao.HcmDAO;
+import com.metalsa.api.payload.EmployeeDTO;
 import com.metalsa.api.payload.LaborLevelDTO;
-import com.metalsa.api.repository.LaborLevelRepository;
 import com.metalsa.api.service.HcmService;
 import com.metalsa.api.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +16,23 @@ import java.util.List;
 @Service
 public class HcmServiceImpl implements HcmService {
 
-
-    private LaborLevelRepository laborLevelRepository;
     private HcmDAO hcmDAO;
 
-    public HcmServiceImpl(LaborLevelRepository laborLevelRepository, HcmDAO hcmDAO) {
-        this.laborLevelRepository = laborLevelRepository;
+    public HcmServiceImpl(HcmDAO hcmDAO) {
         this.hcmDAO = hcmDAO;
+    }
+
+    @Override
+    public List<EmployeeDTO> getEmployees() {
+        List<EmployeeDTO> employeeDTO = new ArrayList<>();
+        try{
+
+            employeeDTO = hcmDAO.getEmployees();
+        }catch(Exception e){
+            log.error("An error has occurred trying to get employees from HCM "+e.getMessage());
+        }
+
+        return employeeDTO;
     }
 
     @Override

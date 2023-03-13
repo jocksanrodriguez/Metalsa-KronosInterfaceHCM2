@@ -24,10 +24,7 @@ public class LaborLevelController {
     public LaborLevelResponse getLaborLevels (@RequestParam(value = "effectiveDate", required = false)
                                                   @DateTimeFormat(pattern = "dd-MM-yyyy") Date effectiveDate){
 
-        LaborLevelResponse response = new LaborLevelResponse();
-        response = laborLevelService.getLaborLevels(effectiveDate);
-
-        return response;
+        return laborLevelService.getLaborLevels(effectiveDate);
     }
 
 
