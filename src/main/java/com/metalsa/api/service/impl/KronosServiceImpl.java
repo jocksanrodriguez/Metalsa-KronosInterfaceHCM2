@@ -2,6 +2,7 @@ package com.metalsa.api.service.impl;
 
 import com.metalsa.api.dao.KronosDAO;
 import com.metalsa.api.model.kronos.KronosWFC;
+import com.metalsa.api.payload.EmployeeDTO;
 import com.metalsa.api.payload.LaborLevelDTO;
 import com.metalsa.api.service.KronosService;
 import com.metalsa.api.util.StringUtil;
@@ -48,8 +49,6 @@ public class KronosServiceImpl implements KronosService {
     public KronosWFC addLaborLevel(LaborLevelDTO laborLevelDTO){
         KronosWFC kronos = new KronosWFC();
         try{
-
-
             kronos = kronosDAO.addLaborLevel(
                     StringUtil.deleteSpecialsChars(laborLevelDTO.getDescription()),
                     laborLevelDTO.getLevelType(),
@@ -60,5 +59,9 @@ public class KronosServiceImpl implements KronosService {
             return null;
         }
         return kronos;
+    }
+
+    public KronosWFC addEmployee(EmployeeDTO employeeDTO){
+        return null;
     }
 }

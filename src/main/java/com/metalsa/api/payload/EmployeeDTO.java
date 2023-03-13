@@ -9,6 +9,7 @@ import java.util.Date;
 @Setter
 public class EmployeeDTO {
 
+    private Integer id;
     private Date creationDate;
     private int employeeStatus;
     private int reqCode;
